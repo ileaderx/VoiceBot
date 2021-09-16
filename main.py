@@ -16,7 +16,7 @@ def record_audio(ask = False):
         audio = r.listen(source)
         voice_data = ''
         try:
-            voice_data = r.recognize_google(audio)
+            voice_data = r.recognize_google(audio, language="en-uk")
         except sr.UnknownValueError:
             erza_speak('Sorry, I did not get that')
         except sr.RequestError:
@@ -47,6 +47,11 @@ def respond(voice_data):
         url = 'https://google.nl/maps/place/' + location + '/&amp;'
         webbrowser.get().open(url)
         erza_speak('here is the location of ' + location)
+    if 'where are you from' in voice_data:
+        import ipinfo
+        handler = ipinfo.getHandler(access_token='2f0b7d20b933b2')
+        details = handler.getDetails()
+        erza_speak("I'm from " + details.country_name)
     if 'go to sleep' in voice_data:
         erza_speak('bye')
         exit()
